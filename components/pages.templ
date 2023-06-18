@@ -1,0 +1,42 @@
+package components
+
+templ Page(title string) {
+  <html>
+    <head>
+      <title>{title}</title>
+      <link rel="stylesheet" href="/assets/style.css"/>
+    </head>
+    <body>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </nav>
+      { children... }
+    </body>
+  </html>
+}
+
+templ Index() {
+  @Page("Index") {
+    <h1>Index</h1>
+    <div id="card_cnt">
+      @Card("John Doe", "john@doe.com")
+    </div>
+  }
+}
+
+templ About() {
+  @Page("Index") {
+    <h1>About</h1>
+    <p>Experimentation with the templ library.</p>
+  }
+}
+
+templ Card(name, email string) {
+  <dy-card>
+    <div class="name">{name}</div>
+    <div class="email">{email}</div>
+  </dy-card>
+}

@@ -23,7 +23,7 @@ func main() {
 	}
 
 	counterService := services.NewCounter(log, store)
-	handler := handlers.New(log, counterService)
+	handler := handlers.NewHandler(log, counterService)
 
 	handlerWithSession := session.Wrap(handler)
 

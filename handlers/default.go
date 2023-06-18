@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/dyuri/templ-counter/components"
@@ -8,8 +9,8 @@ import (
 	"golang.org/x/exp/slog"
 )
 
-// New creates a new DefaultHandler
-func New(log *slog.Logger, counter *services.Counter) http.Handler {
+// NewHandler creates a new DefaultHandler
+func NewHandler(log *slog.Logger, counter *services.Counter) http.Handler {
 	mux := http.NewServeMux()
 
 	dh := &DefaultHandler{
@@ -20,8 +21,11 @@ func New(log *slog.Logger, counter *services.Counter) http.Handler {
 
 	fs := http.FileServer(http.Dir("./static"))
 	mux.Handle("/assets/", fs)
-	mux.HandleFunc("/", dh.Get)
-	mux.HandleFunc("/get2", dh.Get2)
+	mux.HandleFunc("/", dh.Index)
+	mux.HandleFunc("/about", dh.About)
+
+	// widgets
+	mux.HandleFunc("/widget/card", dh.Card)
 
 	return dh
 }
@@ -37,15 +41,41 @@ func (h *DefaultHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.mux.ServeHTTP(w, r)
 }
 
-// Get handles GET requests
-func (h *DefaultHandler) Get(w http.ResponseWriter, r *http.Request) {
+// Index serves the index page
+func (h *DefaultHandler) Index(w http.ResponseWriter, r *http.Request) {
 	component := components.Index()
 	component.Render(r.Context(), w)
 }
 
-// Get2 handles GET requests
-func (h *DefaultHandler) Get2(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World - GET2"))
+// About serves the about page
+func (h *DefaultHandler) About(w http.ResponseWriter, r *http.Request) {
+	component := components.About()
+	component.Render(r.Context(), w)
+}
+
+// Card serves the card widget
+func (h *DefaultHandler) Card(w http.ResponseWriter, r *http.Request) {
+	name := "cica"
+	email := "cica@kutya.hu"
+
+	if r.Method == http.MethodPost {
+		r.ParseMultipartForm(32 << 20)
+
+		h.Logger.Info(fmt.Sprintf("POST"))
+		for k, v := range r.Form {
+			h.Logger.Warn(fmt.Sprintf("key: %s, value: %s\n", k, v))
+		}
+		name = r.FormValue("name")
+		email = r.FormValue("email")
+	}
+
+	component := components.Card(name, email)
+	component.Render(r.Context(), w)
+}
+
+// Get handles GET requests
+func (h *DefaultHandler) Get(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello World - GET"))
 }
 
 // Post handles POST requests
