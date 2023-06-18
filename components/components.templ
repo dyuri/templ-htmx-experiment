@@ -1,0 +1,19 @@
+package components
+
+templ Page(title string) {
+  <html>
+    <head>
+      <title>{title}</title>
+      <link rel="stylesheet" href="/assets/style.css"/>
+    </head>
+    <body>
+      { children... }
+    </body>
+  </html>
+}
+
+templ Index() {
+  @Page("Index") {
+    <h1>Index</h1>
+  }
+}
