@@ -5,12 +5,13 @@ templ Page(title string) {
     <head>
       <title>{title}</title>
       <link rel="stylesheet" href="/assets/style.css"/>
+      <script src="/assets/js/htmx.min.js" async="async" defer="defer"></script>
     </head>
     <body>
       <nav>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
+          <li><a href="/" hx-get="/" hx-push-url="true" hx-target="body">Home</a></li>
+          <li><a href="/about" hx-get="/about" hx-push-url="true" hx-target="body">About</a></li>
         </ul>
       </nav>
       { children... }
@@ -24,6 +25,7 @@ templ Index() {
     <div id="card_cnt">
       @Card("John Doe", "john@doe.com")
     </div>
+    @CardForm()
   }
 }
 
@@ -32,11 +34,4 @@ templ About() {
     <h1>About</h1>
     <p>Experimentation with the templ library.</p>
   }
-}
-
-templ Card(name, email string) {
-  <dy-card>
-    <div class="name">{name}</div>
-    <div class="email">{email}</div>
-  </dy-card>
 }

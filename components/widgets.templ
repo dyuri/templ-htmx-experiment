@@ -1,0 +1,25 @@
+package components
+
+templ Card(name, email string) {
+  <dy-card>
+    <div class="name">{name}</div>
+    <div class="email">{email}</div>
+  </dy-card>
+}
+
+templ CardForm() {
+  <form id="cardform" class="card-form" hx-post="/widget/card" hx-target="#card_cnt">
+    <div>
+      <label for="cardform-name">Name</label>
+      <input id="cardform-name" name="name" placeholder="Name" />
+    </div>
+    <div>
+      <label for="cardform-email">E-mail</label>
+      <input id="cardform-email" name="email" placeholder="Email" />
+    </div>
+    <div>
+      <button type="submit">Send</button>
+      <button type="reset">Reset</button>
+    </div>
+  </form>
+}
