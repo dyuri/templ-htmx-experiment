@@ -1,9 +1,11 @@
 package components
 
-templ Card(name, email string) {
+import "github.com/dyuri/templ-counter/models"
+
+templ Card(card *models.Card) {
   <dy-card>
-    <div class="name">{name}</div>
-    <div class="email">{email}</div>
+    <div class="name">{card.Name}</div>
+    <div class="email">{card.Email}</div>
   </dy-card>
 }
 
@@ -18,7 +20,8 @@ templ CardForm() {
       <input id="cardform-email" name="email" placeholder="Email" />
     </div>
     <div>
-      <button type="submit">Send</button>
+      <button type="submit">HTMX</button>
+      <button type="button" dy-post="cardform">JSON</button>
       <button type="reset">Reset</button>
     </div>
   </form>

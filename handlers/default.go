@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/dyuri/templ-counter/components"
+	"github.com/dyuri/templ-counter/models"
 	"github.com/dyuri/templ-counter/services"
 	"golang.org/x/exp/slog"
 )
@@ -26,6 +27,9 @@ func NewHandler(log *slog.Logger, counter *services.Counter) http.Handler {
 
 	// widgets
 	mux.HandleFunc("/widget/card", dh.Card)
+
+	// api
+	mux.HandleFunc("/api/card", dh.ApiCard)
 
 	return dh
 }
@@ -55,22 +59,38 @@ func (h *DefaultHandler) About(w http.ResponseWriter, r *http.Request) {
 
 // Card serves the card widget
 func (h *DefaultHandler) Card(w http.ResponseWriter, r *http.Request) {
-	name := "cica"
-	email := "cica@kutya.hu"
+	card := models.Card{
+		Name:  "John Doe",
+		Email: "john@doe.com",
+	}
 
 	if r.Method == http.MethodPost {
 		r.ParseMultipartForm(32 << 20)
 
-		h.Logger.Info(fmt.Sprintf("POST"))
-		for k, v := range r.Form {
-			h.Logger.Warn(fmt.Sprintf("key: %s, value: %s\n", k, v))
-		}
-		name = r.FormValue("name")
-		email = r.FormValue("email")
+		card.Name = r.FormValue("name")
+		card.Email = r.FormValue("email")
 	}
 
-	component := components.Card(name, email)
+	component := components.Card(&card)
 	component.Render(r.Context(), w)
+}
+
+// ApiCard serves the card as JSON
+func (h *DefaultHandler) ApiCard(w http.ResponseWriter, r *http.Request) {
+	card := models.Card{
+		Name:  "John Doe",
+		Email: "john@doe.com",
+	}
+
+	if r.Method == http.MethodPost {
+		r.ParseMultipartForm(32 << 20)
+
+		card.Name = r.FormValue("name")
+		card.Email = r.FormValue("email")
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(card)
 }
 
 // Get handles GET requests

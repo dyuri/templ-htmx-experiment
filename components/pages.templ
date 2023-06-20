@@ -1,11 +1,14 @@
 package components
 
+import "github.com/dyuri/templ-counter/models"
+
 templ Page(title string) {
   <html>
     <head>
       <title>{title}</title>
       <link rel="stylesheet" href="/assets/style.css"/>
-      <script src="/assets/js/htmx.min.js" async="async" defer="defer"></script>
+      <script src="/assets/js/htmx.min.js" defer="defer"></script>
+      <script src="/assets/js/script.js" type="module"></script>
     </head>
     <body>
       <nav>
@@ -23,7 +26,7 @@ templ Index() {
   @Page("Index") {
     <h1>Index</h1>
     <div id="card_cnt">
-      @Card("John Doe", "john@doe.com")
+      @Card(&models.Card{"John Doe", "john@doe.com"})
     </div>
     @CardForm()
   }
