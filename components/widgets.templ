@@ -21,7 +21,7 @@ templ CardForm() {
     </div>
     <div>
       <button type="submit">HTMX</button>
-      <button type="button" dy-post="cardform">JSON</button>
+      <button type="button" dy-post="cardform" dy-post-target="/api/card">JSON</button>
       <button type="reset">Reset</button>
     </div>
   </form>
