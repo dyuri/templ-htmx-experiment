@@ -1,4 +1,69 @@
-body {
-  background: #1f1f1f;
-  color: #f0f8d0;
+:root {
+  --c-bg: #1f1f1f;
+  --c-fg: #f0f8d0;
+  --c-primary: #b8bb26;
+  --c-secondary: #fabd2f;
 }
+
+body {
+  font-family: monospace;
+  font-size: 16px;
+  background: var(--c-bg);
+  color: var(--c-fg);
+}
+
+a {
+  color: var(--c-primary);
+}
+
+nav > ul {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 1rem;
+  border-bottom: 1px solid var(--c-secondary);
+}
+
+nav > ul > li {
+  margin-right: 1rem;
+}
+
+#card_cnt {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+dy-card {
+  display: block;
+  max-width: 300px;
+  padding: 1rem;
+  border: 1px solid var(--c-secondary);
+  border-radius: 0.5rem;
+
+  & > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & > .name {
+    color: var(--c-primary);
+  }
+
+}
+
+#cardform {
+  padding: 1rem;
+
+  & label {
+    display: block;
+    margin-top: .25rem;
+  }
+
+  & input {
+    margin-bottom: .25rem;
+  }
+}
+

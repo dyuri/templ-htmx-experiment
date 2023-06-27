@@ -30,3 +30,7 @@ document.addEventListener('click', (e) => {
     });
   }
 });
+
+document.addEventListener('htmx:afterSettle', () => {
+  console.log('htmx:afterSettle');
+});
