@@ -11,18 +11,33 @@ templ Card(card *models.Card) {
 
 templ CardForm() {
   <form id="cardform" class="card-form" hx-post="/widget/card" hx-target="#card_cnt">
-    <div>
-      <label for="cardform-name">Name</label>
-      <input id="cardform-name" name="name" placeholder="Name" />
-    </div>
-    <div>
-      <label for="cardform-email">E-mail</label>
-      <input id="cardform-email" name="email" placeholder="Email" />
-    </div>
-    <div>
-      <button type="submit">HTMX</button>
-      <button type="button" dy-post="cardform" dy-post-target="/api/card">JSON</button>
-      <button type="reset">Reset</button>
-    </div>
+    <fieldset>
+      <legend>Card</legend>
+      <div>
+        <label for="cardform-name">Name</label>
+        <input id="cardform-name" name="name" placeholder="Name" />
+      </div>
+      <div>
+        <label for="cardform-email">E-mail</label>
+        <input id="cardform-email" name="email" placeholder="Email" />
+      </div>
+      <div>
+        <button id="card-button-htmx" type="submit">HTMX</button>
+        <button id="card-button-json" type="button" dy-post="cardform" dy-post-target="/api/card">JSON</button>
+        <button type="reset">Reset</button>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Autorun</legend>
+      <div>
+        <label for="autorun-times">Times</label>
+        <input id="autorun-times" type="number" name="times" placeholder="Times" value="100" />
+        <span id="autorun-result"></span>
+      </div>
+      <div>
+        <button id="autorun-htmx" type="button">HTMX</button>
+        <button id="autorun-json" type="button">JSON</button>
+      </div>
+    </fieldset>
   </form>
 }

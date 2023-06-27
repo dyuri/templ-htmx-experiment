@@ -65,5 +65,10 @@ dy-card {
   & input {
     margin-bottom: .25rem;
   }
+
+  & #autorun-result {
+    margin-left: 1rem;
+    color: var(--c-primary);
+  }
 }
 
