@@ -5,7 +5,7 @@ import "github.com/dyuri/templ-counter/models"
 templ Page(title string) {
   <html>
     <head>
-      <title>{title}</title>
+      <title>HTMX/Templ demo - {title}</title>
       <link rel="stylesheet" href="/assets/style.css"/>
       <script src="/assets/js/htmx.min.js" defer="defer"></script>
       <script src="/assets/js/script.js" type="module"></script>
@@ -23,8 +23,8 @@ templ Page(title string) {
 }
 
 templ Index() {
-  @Page("Index") {
-    <h1>Index</h1>
+  @Page("Home") {
+    <h1>Home - HTMX/Templ demo</h1>
     <div id="card_cnt">
       @Card(&models.Card{"John Doe", "john@doe.com"})
     </div>
@@ -33,7 +33,7 @@ templ Index() {
 }
 
 templ About() {
-  @Page("Index") {
+  @Page("About") {
     <h1>About</h1>
     <p>Experimentation with the templ library.</p>
   }

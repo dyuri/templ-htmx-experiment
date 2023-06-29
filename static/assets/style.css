@@ -12,6 +12,10 @@ body {
   color: var(--c-fg);
 }
 
+h1, h2 {
+  padding: 0 1rem;
+}
+
 a {
   color: var(--c-primary);
 }
