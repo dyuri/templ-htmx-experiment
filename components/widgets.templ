@@ -23,7 +23,8 @@ templ CardForm() {
       </div>
       <div>
         <button id="card-button-htmx" type="submit">HTMX</button>
-        <button id="card-button-json" type="button" dy-post="cardform" dy-post-target="/api/card">JSON</button>
+        <button id="card-button-html" type="button" dy-post="cardform" dy-post-type="html" dy-post-target="/widget/card">HTML</button>
+        <button id="card-button-json" type="button" dy-post="cardform" dy-post-type="json" dy-post-target="/api/card">JSON</button>
         <button type="reset">Reset</button>
       </div>
     </fieldset>
@@ -35,8 +36,9 @@ templ CardForm() {
         <span id="autorun-result"></span>
       </div>
       <div>
-        <button id="autorun-htmx" type="button">HTMX</button>
-        <button id="autorun-json" type="button">JSON</button>
+        <button id="autorun-htmx" autorun="htmx" type="button">HTMX</button>
+        <button id="autorun-html" autorun="html" type="button">HTML</button>
+        <button id="autorun-json" autorun="json" type="button">JSON</button>
       </div>
     </fieldset>
   </form>

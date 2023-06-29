@@ -21,66 +21,46 @@ const STATE = {
   startTime: 0
 };
 
-const autoRunHtmx = () => {
+const autoRun = (type) => {
   const form = document.getElementById('cardform');
   const nrleft = +form.times.value;
 
   if (nrleft > 0) {
     const data = {
-      name: `John ${nrleft} Htmx`,
-      email: `john.${nrleft}@htmx.com`,
+      name: `John ${nrleft} ${type.toUpperCase()}`,
+      email: `john.${nrleft}@${type}.com`,
       times: nrleft - 1,
     };
 
     fillForm(form, data);
-    const button = document.getElementById('card-button-htmx');
+    const button = document.getElementById(`card-button-${type}`);
     button.click();
 
-    document.addEventListener('htmx:afterSwap', () => {
-      autoRunHtmx();
-    }, { once: true });
+    if (type === 'htmx') {
+      document.addEventListener('htmx:afterSwap', () => {
+        autoRun(type);
+      }, { once: true });
+    } else {
+      document.addEventListener('dypost:ready', () => {
+        autoRun(type);
+      }, { once: true });
+    }
   } else {
     const endTime = +new Date();
     const duration = endTime - STATE.startTime;
     const durationEl = document.getElementById('autorun-result');
     durationEl.innerHTML = `${duration} ms`;
+    form.times.value = STATE.times;
   }
 };
 
-const autoRunJson = () => {
+const autoStart = (type) => {
   const form = document.getElementById('cardform');
-  const nrleft = +form.times.value;
 
-  if (nrleft > 0) {
-    const data = {
-      name: `John ${nrleft} Json`,
-      email: `john.${nrleft}@json.com`,
-      times: nrleft - 1,
-    };
-
-    fillForm(form, data);
-    const button = document.getElementById('card-button-json');
-    button.click();
-
-    document.addEventListener('json:ready', () => {
-      autoRunJson();
-    }, { once: true });
-  } else {
-    const endTime = +new Date();
-    const duration = endTime - STATE.startTime;
-    const durationEl = document.getElementById('autorun-result');
-    durationEl.innerHTML = `${duration} ms`;
-  }
-};
-
-const autoStartHtmx = () => {
   STATE.startTime = +new Date();
-  autoRunHtmx();
-};
+  STATE.times = +form.times.value;
 
-const autoStartJson = () => {
-  STATE.startTime = +new Date();
-  autoRunJson();
+  autoRun(type);
 };
 
 document.addEventListener('click', (e) => {
@@ -89,6 +69,7 @@ document.addEventListener('click', (e) => {
     const button = e.target.closest('[dy-post]');
     const id = button.getAttribute('dy-post');
     const url = button.getAttribute('dy-post-target');
+    const type = button.getAttribute('dy-post-type');
     const form = document.getElementById(id);
     const formData = new FormData(form);
 
@@ -97,20 +78,18 @@ document.addEventListener('click', (e) => {
       body: formData,
     }).then((response) => {
       if (response.ok) {
-        return response.json();
+        return type === 'json' ? response.json() : response.text();
       }
       throw new Error('Network response was not ok.');
     }).then((data) => {
       const cardCnt = document.getElementById('card_cnt');
-      cardCnt.innerHTML = cardWidget(data);
+      cardCnt.innerHTML = type === 'json' ? cardWidget(data) : data;
 
-      const event = new CustomEvent('json:ready', { bubbles: true });
+      const event = new CustomEvent('dypost:ready', { bubbles: true });
       document.dispatchEvent(event);
     });
-  } else if (e.target.matches('#autorun-htmx, #autorun-htmx *')) {
-    autoStartHtmx();
-  } else if (e.target.matches('#autorun-json, #autorun-json *')) {
-    autoStartJson();
+  } else if (e.target.matches('[autorun]')) {
+    autoStart(e.target.getAttribute('autorun'));
   }
 });
 
